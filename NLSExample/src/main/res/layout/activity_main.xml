@@ -44,8 +44,6 @@
                 android:text="NotificationListenerService Example"
                 android:id="@+id/textView"
                 />
-
-
     </ScrollView>
 
     <Button
