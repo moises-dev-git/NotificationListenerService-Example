@@ -1,6 +1,5 @@
 package com.kpbird.nlsexample;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -13,34 +12,83 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
-import android.view.View;
-import android.widget.TextView;
-import androidx.core.app.NotificationCompat;
-import androidx.core.content.ContextCompat;
 
-public class MainActivity extends Activity {
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import android.content.SharedPreferences;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity {
 
     private static final String CHANNEL_ID = "nlsexample_channel";
-    private TextView txtView;
+    private RecyclerView recyclerView;
+    private NotificationAdapter adapter;
     private NotificationReceiver nReceiver;
+
+    // Devem ser exatamente os mesmos nomes usados no NLService
+    private static final String PREFS_NAME = "HistoricoNotificacoes";
+    private static final String KEY_LOG = "log_texto";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        txtView = (TextView) findViewById(R.id.textView);
+
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        adapter = new NotificationAdapter(new ArrayList<>());
+        recyclerView.setAdapter(adapter);
+
         nReceiver = new NotificationReceiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction("com.kpbird.nlsexample.NOTIFICATION_LISTENER_EXAMPLE");
-        ContextCompat.registerReceiver(this, nReceiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
+
+        ContextCompat.registerReceiver(
+                this,
+                nReceiver,
+                filter,
+                ContextCompat.RECEIVER_NOT_EXPORTED);
 
         // Cria o canal de notificação (necessário no Android 8+)
         createNotificationChannel();
+
+        // Carrega o histórico salvo automaticamente ao abrir o app
+        mostrarHistoricoSalvo();
+
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+
+        bottomNav.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+
+            if (itemId == R.id.action_view_saved) {
+                mostrarHistoricoSalvo();
+                return true;
+
+            } else if (itemId == R.id.action_settings) {
+                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                return true;
+
+            } else if (itemId == R.id.action_edit) {
+                startActivity(new Intent(MainActivity.this, EditActivity.class));
+                return true;
+            }
+
+            return false;
+        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
         // Verifica permissão toda vez que o app volta ao primeiro plano
         if (!isNotificationListenerEnabled()) {
             showEnableNotificationListenerDialog();
@@ -50,7 +98,10 @@ public class MainActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(nReceiver);
+
+        if (nReceiver != null) {
+            unregisterReceiver(nReceiver);
+        }
     }
 
     /**
@@ -58,17 +109,23 @@ public class MainActivity extends Activity {
      */
     private boolean isNotificationListenerEnabled() {
         String pkgName = getPackageName();
-        String flat = Settings.Secure.getString(getContentResolver(),
+
+        String flat = Settings.Secure.getString(
+                getContentResolver(),
                 "enabled_notification_listeners");
+
         if (!TextUtils.isEmpty(flat)) {
             String[] names = flat.split(":");
+
             for (String name : names) {
                 ComponentName cn = ComponentName.unflattenFromString(name);
+
                 if (cn != null && TextUtils.equals(pkgName, cn.getPackageName())) {
                     return true;
                 }
             }
         }
+
         return false;
     }
 
@@ -78,11 +135,11 @@ public class MainActivity extends Activity {
     private void showEnableNotificationListenerDialog() {
         new AlertDialog.Builder(this)
                 .setTitle("Permissão necessária")
-                .setMessage("Este app precisa de acesso às notificações para funcionar.\n\n"
-                        + "Toque em \"Configurações\", ative a opção para este app e volte.")
-                .setPositiveButton("Configurações", (dialog, which) -> {
-                    startActivity(new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS));
-                })
+                .setMessage(
+                        "Este app precisa de acesso às notificações para funcionar.\n\n" +
+                                "Toque em \"Configurações\", ative a opção para este app e volte.")
+                .setPositiveButton("Configurações", (dialog, which) -> startActivity(
+                        new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)))
                 .setNegativeButton("Cancelar", null)
                 .setCancelable(false)
                 .show();
@@ -93,44 +150,74 @@ public class MainActivity extends Activity {
      */
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
             NotificationChannel channel = new NotificationChannel(
                     CHANNEL_ID,
                     "NLS Example Channel",
                     NotificationManager.IMPORTANCE_DEFAULT);
-            channel.setDescription("Canal de teste para o NotificationListenerService");
+
+            channel.setDescription(
+                    "Canal de teste para o NotificationListenerService");
+
             NotificationManager nm = getSystemService(NotificationManager.class);
-            if (nm != null) nm.createNotificationChannel(channel);
+
+            if (nm != null) {
+                nm.createNotificationChannel(channel);
+            }
         }
     }
 
-    public void buttonClicked(View v) {
-        if (v.getId() == R.id.btnCreateNotify) {
-            NotificationManager nManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            NotificationCompat.Builder ncomp = new NotificationCompat.Builder(this, CHANNEL_ID);
-            ncomp.setContentTitle("My Notification");
-            ncomp.setContentText("Notification Listener Service Example");
-            ncomp.setTicker("Notification Listener Service Example");
-            ncomp.setSmallIcon(R.drawable.ic_launcher);
-            ncomp.setAutoCancel(true);
-            if (nManager != null) {
-                nManager.notify((int) System.currentTimeMillis(), ncomp.build());
+    private void mostrarHistoricoSalvo() {
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+
+        String historico = sharedPreferences.getString(KEY_LOG, "");
+
+        List<NotificationItem> items = new ArrayList<>();
+
+        if (!historico.isEmpty()) {
+
+            // Separa por quebra de linha seguida por '['
+            String[] linhas = historico.split("\n(?=\\[)");
+
+            for (String linha : linhas) {
+                if (!linha.trim().isEmpty()) {
+                    items.add(new NotificationItem(linha.trim()));
+                }
             }
-        } else if (v.getId() == R.id.btnClearNotify) {
-            Intent i = new Intent("com.kpbird.nlsexample.NOTIFICATION_LISTENER_SERVICE_EXAMPLE");
-            i.putExtra("command", "clearall");
-            sendBroadcast(i);
-        } else if (v.getId() == R.id.btnListNotify) {
-            Intent i = new Intent("com.kpbird.nlsexample.NOTIFICATION_LISTENER_SERVICE_EXAMPLE");
-            i.putExtra("command", "list");
-            sendBroadcast(i);
         }
+
+        if (adapter != null) {
+            adapter.updateData(items);
+
+            if (!items.isEmpty()) {
+                recyclerView.scrollToPosition(items.size() - 1);
+            }
+        }
+    }
+
+    private void settings() {
+        startActivity(new Intent(this, SettingsActivity.class));
     }
 
     class NotificationReceiver extends BroadcastReceiver {
+
         @Override
         public void onReceive(Context context, Intent intent) {
-            String temp = intent.getStringExtra("notification_event") + "\n" + txtView.getText();
-            txtView.setText(temp);
+
+            String texto = intent.getStringExtra("nova_notificacao");
+
+            android.util.Log.d(
+                    "MainActivity",
+                    "Recebeu broadcast. texto=" + texto);
+
+            if (texto != null) {
+
+                adapter.addItem(
+                        new NotificationItem(texto));
+
+                recyclerView.scrollToPosition(
+                        adapter.getItemCount() - 1);
+            }
         }
     }
 }

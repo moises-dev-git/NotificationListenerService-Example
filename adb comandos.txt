@@ -1,0 +1,1 @@
+adb shell cmd notification post -S bigtext "TesteADB" "Olá"
