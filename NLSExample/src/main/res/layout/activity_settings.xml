@@ -13,26 +13,86 @@
         android:textStyle="bold"
         android:layout_marginBottom="16dp"/>
 
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch_voice_notes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Salvar WhatsApp Voice Notes"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+
+    <Button
+        android:id="@+id/btn_select_voice_notes_folder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Selecionar Pasta do WhatsApp"
+        android:layout_marginBottom="8dp" />
+
+    <Button
+        android:id="@+id/btn_view_voice_notes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ver Voice Notes Salvos"
+        android:layout_marginBottom="16dp" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ignored Apps (comma separated package names):"
+        android:text="Ignored Apps &amp; Words (pacotes, palavras ou expressões separadas por vírgula):"
         android:textStyle="bold"/>
 
     <EditText
         android:id="@+id/edit_ignored_apps"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="com.whatsapp, com.android.systemui"
+        android:hint="com.whatsapp, promoção, aviso de segurança"
         android:inputType="textMultiLine"
         android:lines="3"
+        android:gravity="top"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancelar Notificações (Barra do Android)"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pacotes a Cancelar (ex: com.spam, ...):"
+        android:textStyle="bold"/>
+
+    <EditText
+        android:id="@+id/edit_cancel_packages"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:lines="2"
+        android:gravity="top"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Palavras/Expressões a Cancelar (ex: promoção, ...):"
+        android:textStyle="bold"/>
+
+    <EditText
+        android:id="@+id/edit_cancel_words"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:lines="2"
         android:gravity="top"/>
 
     <Button
         android:id="@+id/btn_save_settings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Save Ignored Apps"
+        android:text="Save All Settings"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"/>
 
     <Button

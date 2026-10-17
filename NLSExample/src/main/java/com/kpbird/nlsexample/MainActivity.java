@@ -79,6 +79,10 @@ public class MainActivity extends AppCompatActivity {
             } else if (itemId == R.id.action_edit) {
                 startActivity(new Intent(MainActivity.this, EditActivity.class));
                 return true;
+                
+            } else if (itemId == R.id.action_voice_notes) {
+                startActivity(new Intent(MainActivity.this, VoiceNotesActivity.class));
+                return true;
             }
 
             return false;

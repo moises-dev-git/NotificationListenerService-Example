@@ -44,14 +44,19 @@ public class NLService extends NotificationListenerService {
         // 2. Monta a string de payload que será salva (sem timestamp)
         String payload = String.format("App: %s | %s: %s", pacote, titulo, corpo);
 
-        // 3. Verifica aplicativos ignorados
+        // Chamada de exemplo para remover a notificação se necessário
+        verificarERemoverNotificacao(sbn, pacote, titulo, corpo);
+
+        // 3. Verifica aplicativos, palavras e expressões ignoradas
         SharedPreferences settingsPrefs = getSharedPreferences(SettingsActivity.SETTINGS_PREFS, Context.MODE_PRIVATE);
         String ignoredAppsStr = settingsPrefs.getString(SettingsActivity.KEY_IGNORED_APPS, "");
         if (!ignoredAppsStr.isEmpty()) {
             String[] ignoredApps = ignoredAppsStr.split(",");
+            String textoCompleto = (pacote + " " + titulo + " " + corpo).toLowerCase(Locale.getDefault());
             for (String ignoredApp : ignoredApps) {
-                if (pacote.trim().equalsIgnoreCase(ignoredApp.trim())) {
-                    Log.i(TAG, "Notificação ignorada do app: " + pacote);
+                String filter = ignoredApp.trim().toLowerCase(Locale.getDefault());
+                if (!filter.isEmpty() && textoCompleto.contains(filter)) {
+                    Log.i(TAG, "Notificação ignorada pelo filtro (" + filter + "): " + pacote);
                     return;
                 }
             }
@@ -59,11 +64,64 @@ public class NLService extends NotificationListenerService {
 
         // 4. Salva localmente via SharedPreferences (o método checará duplicatas)
         salvarNoSharedPreferences(payload);
+
+        // 5. WhatsApp Voice Notes Import
+        if (pacote.equals("com.whatsapp") || pacote.equals("com.whatsapp.w4b")) {
+            boolean voiceNotesEnabled = settingsPrefs.getBoolean(SettingsActivity.KEY_VOICE_NOTES_ENABLED, false);
+            if (voiceNotesEnabled) {
+                new Thread(() -> {
+                    try {
+                        int imported = WhatsAppVoiceNotesUtils.importAllNewVoiceNotes(getApplicationContext());
+                        if (imported > 0) {
+                            Log.i(TAG, "Imported " + imported + " new voice notes");
+                        }
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error importing voice notes", e);
+                    }
+                }).start();
+            }
+        }
     }
 
     @Override
     public void onNotificationRemoved(StatusBarNotification sbn) {
         Log.i(TAG, "********** onNotificationRemoved");
+    }
+
+    /**
+     * Verifica as regras e remove (cancela) a notificação da barra de status do
+     * Android, se necessário.
+     */
+    private void verificarERemoverNotificacao(StatusBarNotification sbn, String pacote, String titulo, String corpo) {
+        SharedPreferences settingsPrefs = getSharedPreferences(SettingsActivity.SETTINGS_PREFS, Context.MODE_PRIVATE);
+        
+        // 1. Remover por pacotes bloqueados
+        String cancelPackagesStr = settingsPrefs.getString(SettingsActivity.KEY_CANCEL_PACKAGES, "");
+        if (!cancelPackagesStr.isEmpty()) {
+            String[] cancelPackages = cancelPackagesStr.split(",");
+            for (String p : cancelPackages) {
+                if (pacote.trim().equalsIgnoreCase(p.trim())) {
+                    cancelNotification(sbn.getKey());
+                    Log.i(TAG, "Notificação removida: Pacote bloqueado (" + pacote + ")");
+                    return; // Já cancelou, não precisa testar palavras
+                }
+            }
+        }
+
+        // 2. Remover por palavras proibidas
+        String cancelWordsStr = settingsPrefs.getString(SettingsActivity.KEY_CANCEL_WORDS, "");
+        if (!cancelWordsStr.isEmpty()) {
+            String[] cancelWords = cancelWordsStr.split(",");
+            String textoCompleto = (titulo + " " + corpo).toLowerCase();
+            for (String word : cancelWords) {
+                String w = word.trim().toLowerCase();
+                if (!w.isEmpty() && textoCompleto.contains(w)) {
+                    cancelNotification(sbn.getKey());
+                    Log.i(TAG, "Notificação removida: Palavra proibida encontrada (" + w + ")");
+                    return; // Já cancelou
+                }
+            }
+        }
     }
 
     // Método responsável por acumular os textos no SharedPreferences

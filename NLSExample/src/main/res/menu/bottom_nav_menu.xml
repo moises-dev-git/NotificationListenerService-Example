@@ -12,5 +12,9 @@
         android:id="@+id/action_edit"
         android:icon="@android:drawable/ic_menu_edit"
         android:title="Edit" />
+    <item
+        android:id="@+id/action_voice_notes"
+        android:icon="@android:drawable/ic_media_play"
+        android:title="Voz" />
 
 </menu>
