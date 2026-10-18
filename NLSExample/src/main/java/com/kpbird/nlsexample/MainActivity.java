@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import android.content.SharedPreferences;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +31,6 @@ public class MainActivity extends AppCompatActivity {
     private NotificationAdapter adapter;
     private NotificationReceiver nReceiver;
 
-    // Devem ser exatamente os mesmos nomes usados no NLService
-    private static final String PREFS_NAME = "HistoricoNotificacoes";
-    private static final String KEY_LOG = "log_texto";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,24 +168,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void mostrarHistoricoSalvo() {
-        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-
-        String historico = sharedPreferences.getString(KEY_LOG, "");
-
-        List<NotificationItem> items = new ArrayList<>();
-
-        if (!historico.isEmpty()) {
-
-            // Separa por quebra de linha seguida por '['
-            String[] linhas = historico.split("\n(?=\\[)");
-
-            for (String linha : linhas) {
-                if (!linha.trim().isEmpty()) {
-                    items.add(new NotificationItem(linha.trim()));
-                }
-            }
-        }
-
+        List<NotificationItem> items = NotificationDb.get(this).listarTodas();
         if (adapter != null) {
             adapter.updateData(items);
 

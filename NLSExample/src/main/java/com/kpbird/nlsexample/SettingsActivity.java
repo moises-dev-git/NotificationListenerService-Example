@@ -1,11 +1,14 @@
 package com.kpbird.nlsexample;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -17,8 +20,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileWriter;
-import android.os.Environment;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -134,60 +139,71 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void exportToJson(boolean share) {
-        SharedPreferences sharedPreferences = getSharedPreferences("HistoricoNotificacoes", Context.MODE_PRIVATE);
-        String historico = sharedPreferences.getString("log_texto", "");
-        
         try {
             JSONArray jsonArray = new JSONArray();
-            if (!historico.isEmpty()) {
-                String[] linhas = historico.split("\n(?=\\[)");
-                for (String linha : linhas) {
-                    if (!linha.trim().isEmpty()) {
-                        JSONObject obj = new JSONObject();
-                        // Tentar separar em timestamp, app, titulo e corpo
-                        // Formato: [dd/MM/yyyy HH:mm:ss] App: pacote | Titulo: Corpo
-                        String text = linha.trim();
-                        obj.put("raw", text);
-                        try {
-                            if (text.startsWith("[")) {
-                                int endDate = text.indexOf("]");
-                                obj.put("date", text.substring(1, endDate));
-                                
-                                int appIndex = text.indexOf("App: ", endDate);
-                                int pipeIndex = text.indexOf(" | ", appIndex);
-                                if (appIndex != -1 && pipeIndex != -1) {
-                                    obj.put("app", text.substring(appIndex + 5, pipeIndex));
-                                    obj.put("content", text.substring(pipeIndex + 3));
-                                }
-                            }
-                        } catch (Exception e) {
-                            // ignora e fica so com o raw
+            for (NotificationItem item : NotificationDb.get(this).listarTodas()) {
+                JSONObject obj = new JSONObject();
+                // Formato: [dd/MM/yyyy HH:mm:ss] App: pacote | Titulo: Corpo
+                String text = item.rawText;
+                obj.put("raw", text);
+                try {
+                    if (text.startsWith("[")) {
+                        int endDate = text.indexOf("]");
+                        obj.put("date", text.substring(1, endDate));
+                        int appIndex = text.indexOf("App: ", endDate);
+                        int pipeIndex = text.indexOf(" | ", appIndex);
+                        if (appIndex != -1 && pipeIndex != -1) {
+                            obj.put("app", text.substring(appIndex + 5, pipeIndex));
+                            obj.put("content", text.substring(pipeIndex + 3));
                         }
-                        jsonArray.put(obj);
                     }
+                } catch (Exception e) {
+                    // ignora e fica so com o raw
                 }
+                jsonArray.put(obj);
             }
-            
-            File exportFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "notifications_export_" + System.currentTimeMillis() + ".json");
-            FileWriter writer = new FileWriter(exportFile);
-            writer.write(jsonArray.toString(4));
-            writer.flush();
-            writer.close();
-            
-            Toast.makeText(this, "Exported to " + exportFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
+
+            String fileName = "notifications_export_" + System.currentTimeMillis() + ".json";
+            byte[] bytes = jsonArray.toString(4).getBytes(StandardCharsets.UTF_8);
+            Uri fileUri;
+            String location;
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                // Android 10+: grava na pasta pública Downloads via MediaStore (sem permissão de storage)
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Downloads.DISPLAY_NAME, fileName);
+                values.put(MediaStore.Downloads.MIME_TYPE, "application/json");
+                values.put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
+                fileUri = getContentResolver().insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
+                if (fileUri == null) {
+                    throw new IOException("MediaStore insert returned null");
+                }
+                try (OutputStream out = getContentResolver().openOutputStream(fileUri)) {
+                    if (out == null) {
+                        throw new IOException("Could not open output stream");
+                    }
+                    out.write(bytes);
+                }
+                location = Environment.DIRECTORY_DOWNLOADS + "/" + fileName;
+            } else {
+                // Android 9 ou anterior: pasta Downloads do próprio app (sem permissão de storage)
+                File exportFile = new File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), fileName);
+                try (FileOutputStream out = new FileOutputStream(exportFile)) {
+                    out.write(bytes);
+                }
+                fileUri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", exportFile);
+                location = exportFile.getAbsolutePath();
+            }
+
+            Toast.makeText(this, "Exported to " + location, Toast.LENGTH_LONG).show();
 
             if (share) {
-                Uri fileUri = FileProvider.getUriForFile(
-                        this,
-                        getPackageName() + ".fileprovider",
-                        exportFile);
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("application/json");
                 shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
                 shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 startActivity(Intent.createChooser(shareIntent, "Share notifications log via..."));
             }
-            
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this, "Export failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();

@@ -110,12 +110,14 @@ public class WhatsAppVoiceNotesUtils {
                 // Renomeia de .tmp para o nome final
                 File destFile = new File(destDir, fileName);
                 if (!tempFile.renameTo(destFile)) {
-                    // Fallback: se renameTo falhar, o .tmp fica e será sobrescrito depois
+                    // Não registra o nome: o .tmp será sobrescrito e a importação tentada de novo
                     Log.w(TAG, "renameTo failed for " + fileName);
+                    continue;
                 }
 
                 // Registra nome + hash
                 hashPrefs.edit().putString(fileName, hash).apply();
+                importedCount++;
                 importedCount++;
                 Log.i(TAG, "Imported: " + fileName + " (hash=" + hash.substring(0, 12) + "...)");
 

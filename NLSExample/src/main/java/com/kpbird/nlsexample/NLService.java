@@ -16,10 +16,6 @@ import java.util.Locale;
 public class NLService extends NotificationListenerService {
     private String TAG = this.getClass().getSimpleName();
 
-    // Nome do arquivo de preferências
-    private static final String PREFS_NAME = "HistoricoNotificacoes";
-    private static final String KEY_LOG = "log_texto";
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -62,8 +58,8 @@ public class NLService extends NotificationListenerService {
             }
         }
 
-        // 4. Salva localmente via SharedPreferences (o método checará duplicatas)
-        salvarNoSharedPreferences(payload);
+        // 4. Salva localmente no banco (o método checará duplicatas)
+        salvarNoHistorico(payload);
 
         // 5. WhatsApp Voice Notes Import
         if (pacote.equals("com.whatsapp") || pacote.equals("com.whatsapp.w4b")) {
@@ -124,17 +120,13 @@ public class NLService extends NotificationListenerService {
         }
     }
 
-    // Método responsável por acumular os textos no SharedPreferences
-    private void salvarNoSharedPreferences(String payload) {
+    // Método responsável por gravar a notificação no banco (NotificationDb)
+    private void salvarNoHistorico(String payload) {
         try {
-            SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-
-            // Recupera o que já estava salvo (se não houver nada, retorna uma string vazia)
-            String historicoAntigo = sharedPreferences.getString(KEY_LOG, "");
+            NotificationDb db = NotificationDb.get(this);
 
             // Verifica se a última notificação do histórico é idêntica à atual
-            if (historicoAntigo.endsWith(payload)) {
+            if (db.ultima().endsWith(payload)) {
                 Log.d(TAG, "Notificação duplicada ignorada.");
                 return;
             }
@@ -145,23 +137,17 @@ public class NLService extends NotificationListenerService {
             // Junta o timestamp com o payload
             String novoTexto = String.format("[%s] %s", horario, payload);
 
-            // Junta o histórico antigo com a nova linha
-            String historicoAtualizado;
-            if (historicoAntigo.isEmpty()) {
-                historicoAtualizado = novoTexto;
-            } else {
-                historicoAtualizado = historicoAntigo + "\n" + novoTexto;
+            // Insere apenas a nova linha (não regrava o histórico inteiro)
+            if (db.inserir(novoTexto) == -1) {
+                Log.e(TAG, "Falha ao inserir notificação no banco");
+                return;
             }
-
-            // Salva de forma assíncrona (apply não trava a thread principal)
-            editor.putString(KEY_LOG, historicoAtualizado);
-            editor.commit();
 
             // Toast rápido confirmando o salvamento local
             Toast.makeText(getApplicationContext(), "Notificação salva localmente!", Toast.LENGTH_SHORT).show();
 
             // Log para conferência no Logcat
-            Log.d(TAG, "Salvo no SharedPreferences: " + novoTexto);
+            Log.d(TAG, "Salvo no banco: " + novoTexto);
 
             // Avisa a MainActivity que há uma nova notificação
             Intent intent = new Intent("com.kpbird.nlsexample.NOTIFICATION_LISTENER_EXAMPLE");
@@ -170,7 +156,7 @@ public class NLService extends NotificationListenerService {
             sendBroadcast(intent);
 
         } catch (Exception e) {
-            Log.e(TAG, "Erro ao salvar no SharedPreferences", e);
+            Log.e(TAG, "Erro ao salvar no banco", e);
         }
     }
 }

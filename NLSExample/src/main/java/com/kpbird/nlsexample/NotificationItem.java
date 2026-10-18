@@ -7,6 +7,9 @@ package com.kpbird.nlsexample;
  */
 public class NotificationItem {
 
+    // Id da linha no banco (NotificationDb); -1 se não veio do banco
+    public long id = -1;
+
     // Horário da notificação (ex: 14:35:10)
     public String time;
 

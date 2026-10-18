@@ -1,7 +1,6 @@
 package com.kpbird.nlsexample;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,8 +26,6 @@ public class EditActivity extends AppCompatActivity {
     private RecyclerView recyclerFiltered;
     private NotificationAdapter adapter;
 
-    private static final String PREFS_NAME = "HistoricoNotificacoes";
-    private static final String KEY_LOG = "log_texto";
 
     private List<NotificationItem> allItems = new ArrayList<>();
     private List<NotificationItem> filteredItems = new ArrayList<>();
@@ -59,18 +56,7 @@ public class EditActivity extends AppCompatActivity {
 
     private void loadAllItems() {
         allItems.clear();
-        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        String historico = sharedPreferences.getString(KEY_LOG, "");
-
-        if (!historico.isEmpty()) {
-            String[] linhas = historico.split("\n(?=\\[)");
-            for (String linha : linhas) {
-                if (!linha.trim().isEmpty()) {
-                    allItems.add(new NotificationItem(linha.trim()));
-                }
-            }
-        }
-        
+        allItems.addAll(NotificationDb.get(this).listarTodas());
         applyFilter();
     }
 
@@ -105,28 +91,15 @@ public class EditActivity extends AppCompatActivity {
 
         new AlertDialog.Builder(this)
                 .setTitle("Confirm Deletion")
-                .setMessage("Are you sure you want to delete all " + filteredItems.size() + " filtered items from SharedPreferences?")
+                .setMessage("Are you sure you want to delete all " + filteredItems.size() + " filtered items?")
                 .setPositiveButton("Delete", (dialog, which) -> executeDelete())
                 .setNegativeButton("Cancel", null)
                 .show();
     }
 
     private void executeDelete() {
-        // Remove the filtered items from allItems
-        allItems.removeAll(filteredItems);
-
-        // Rebuild the history string
-        StringBuilder newHistorico = new StringBuilder();
-        for (int i = 0; i < allItems.size(); i++) {
-            newHistorico.append(allItems.get(i).rawText);
-            if (i < allItems.size() - 1) {
-                newHistorico.append("\n");
-            }
-        }
-
-        // Save back to SharedPreferences
-        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        sharedPreferences.edit().putString(KEY_LOG, newHistorico.toString()).apply();
+        // Apaga apenas as linhas filtradas no banco
+        NotificationDb.get(this).apagar(filteredItems);
 
         Toast.makeText(this, "Deleted " + filteredItems.size() + " items.", Toast.LENGTH_SHORT).show();
 
