@@ -43,8 +43,15 @@ public class NLService extends NotificationListenerService {
         // Chamada de exemplo para remover a notificação se necessário
         verificarERemoverNotificacao(sbn, pacote, titulo, corpo);
 
-        // 3. Verifica aplicativos, palavras e expressões ignoradas
+        // 3. Áudios do WhatsApp: dispara antes dos filtros, para que nenhuma notificação
+        //    ignorada impeça a importação (a notificação chega antes do download terminar)
         SharedPreferences settingsPrefs = getSharedPreferences(SettingsActivity.SETTINGS_PREFS, Context.MODE_PRIVATE);
+        if ((pacote.equals("com.whatsapp") || pacote.equals("com.whatsapp.w4b"))
+                && settingsPrefs.getBoolean(SettingsActivity.KEY_VOICE_NOTES_ENABLED, false)) {
+            WhatsAppVoiceNotesUtils.onWhatsAppNotification(this);
+        }
+
+        // 4. Verifica aplicativos, palavras e expressões ignoradas
         String ignoredAppsStr = settingsPrefs.getString(SettingsActivity.KEY_IGNORED_APPS, "");
         if (!ignoredAppsStr.isEmpty()) {
             String[] ignoredApps = ignoredAppsStr.split(",");
@@ -58,25 +65,8 @@ public class NLService extends NotificationListenerService {
             }
         }
 
-        // 4. Salva localmente no banco (o método checará duplicatas)
+        // 5. Salva localmente no banco (o método checará duplicatas)
         salvarNoHistorico(payload);
-
-        // 5. WhatsApp Voice Notes Import
-        if (pacote.equals("com.whatsapp") || pacote.equals("com.whatsapp.w4b")) {
-            boolean voiceNotesEnabled = settingsPrefs.getBoolean(SettingsActivity.KEY_VOICE_NOTES_ENABLED, false);
-            if (voiceNotesEnabled) {
-                new Thread(() -> {
-                    try {
-                        int imported = WhatsAppVoiceNotesUtils.importAllNewVoiceNotes(getApplicationContext());
-                        if (imported > 0) {
-                            Log.i(TAG, "Imported " + imported + " new voice notes");
-                        }
-                    } catch (Exception e) {
-                        Log.e(TAG, "Error importing voice notes", e);
-                    }
-                }).start();
-            }
-        }
     }
 
     @Override
