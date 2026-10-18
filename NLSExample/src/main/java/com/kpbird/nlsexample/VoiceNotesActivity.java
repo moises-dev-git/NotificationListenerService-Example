@@ -10,11 +10,12 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
 import java.util.List;
@@ -35,7 +36,6 @@ public class VoiceNotesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voice_notes);
-        setTitle("WhatsApp Voice Notes");
 
         cbSelectAll = findViewById(R.id.cb_select_all);
         btnDeleteSelected = findViewById(R.id.btn_delete_selected);
@@ -102,9 +102,9 @@ public class VoiceNotesActivity extends AppCompatActivity {
     }
 
     private void confirmDelete(File file) {
-        new AlertDialog.Builder(this)
-                .setTitle("Apagar Voice Note")
-                .setMessage("Tem certeza que deseja apagar " + file.getName() + "?")
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("Apagar áudio")
+                .setMessage("Apagar " + file.getName() + "?")
                 .setPositiveButton("Apagar", (dialog, which) -> {
                     if (file.equals(currentPlayingFile)) {
                         stopPlaying();
@@ -125,11 +125,11 @@ public class VoiceNotesActivity extends AppCompatActivity {
         if (selectedFiles.isEmpty()) return;
 
         String message = selectedFiles.size() == 1
-                ? "Tem certeza que deseja apagar 1 Voice Note selecionada?"
-                : "Tem certeza que deseja apagar " + selectedFiles.size() + " Voice Notes selecionadas?";
+                ? "Apagar o áudio selecionado?"
+                : "Apagar os " + selectedFiles.size() + " áudios selecionados?";
 
-        new AlertDialog.Builder(this)
-                .setTitle("Apagar Voice Notes")
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("Apagar áudios")
                 .setMessage(message)
                 .setPositiveButton("Apagar", (dialog, which) -> {
                     int deletedCount = 0;
@@ -141,7 +141,7 @@ public class VoiceNotesActivity extends AppCompatActivity {
                             deletedCount++;
                         }
                     }
-                    Toast.makeText(VoiceNotesActivity.this, deletedCount + " Voice Note(s) apagada(s).", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(VoiceNotesActivity.this, deletedCount + (deletedCount == 1 ? " áudio apagado." : " áudios apagados."), Toast.LENGTH_SHORT).show();
                     refreshData();
                 })
                 .setNegativeButton("Cancelar", null)
@@ -193,7 +193,7 @@ public class VoiceNotesActivity extends AppCompatActivity {
             shareIntent.setType("audio/*");
             shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
             shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            startActivity(Intent.createChooser(shareIntent, "Compartilhar Voice Note"));
+            startActivity(Intent.createChooser(shareIntent, "Compartilhar áudio"));
         } catch (Exception e) {
             Toast.makeText(this, "Erro ao compartilhar.", Toast.LENGTH_SHORT).show();
         }

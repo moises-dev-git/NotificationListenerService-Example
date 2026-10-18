@@ -69,7 +69,7 @@ public class SettingsActivity extends AppCompatActivity {
                     .putString(KEY_CANCEL_PACKAGES, editCancelPackages.getText().toString())
                     .putString(KEY_CANCEL_WORDS, editCancelWords.getText().toString())
                     .apply();
-            Toast.makeText(this, "Settings saved!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Filtros salvos!", Toast.LENGTH_SHORT).show();
         });
 
         btnExportJson.setOnClickListener(v -> exportToJson(false));
@@ -107,7 +107,7 @@ public class SettingsActivity extends AppCompatActivity {
 
             startActivityForResult(intent, REQUEST_CODE_WHATSAPP_FOLDER);
         } catch (Exception e) {
-            Toast.makeText(this, "Error opening folder picker", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Não foi possível abrir o seletor de pastas", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -195,18 +195,18 @@ public class SettingsActivity extends AppCompatActivity {
                 location = exportFile.getAbsolutePath();
             }
 
-            Toast.makeText(this, "Exported to " + location, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Exportado para " + location, Toast.LENGTH_LONG).show();
 
             if (share) {
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("application/json");
                 shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
                 shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                startActivity(Intent.createChooser(shareIntent, "Share notifications log via..."));
+                startActivity(Intent.createChooser(shareIntent, "Compartilhar histórico"));
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, "Export failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Falha ao exportar: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 }

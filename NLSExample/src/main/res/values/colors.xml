@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Paleta Material 3 (tema claro), semente verde -->
+    <color name="md_primary">#386A20</color>
+    <color name="md_onPrimary">#FFFFFF</color>
+    <color name="md_primaryContainer">#B8F397</color>
+    <color name="md_onPrimaryContainer">#042100</color>
+    <color name="md_secondary">#55624C</color>
+    <color name="md_onSecondary">#FFFFFF</color>
+    <color name="md_secondaryContainer">#D9E7CB</color>
+    <color name="md_onSecondaryContainer">#131F0D</color>
+    <color name="md_tertiary">#386666</color>
+    <color name="md_tertiaryContainer">#BBEBEC</color>
+    <color name="md_onTertiaryContainer">#002020</color>
+    <color name="md_error">#BA1A1A</color>
+    <color name="md_onError">#FFFFFF</color>
+    <color name="md_errorContainer">#FFDAD6</color>
+    <color name="md_onErrorContainer">#410002</color>
+    <color name="md_surface">#FDFDF5</color>
+    <color name="md_onSurface">#1A1C18</color>
+    <color name="md_surfaceVariant">#E0E4D6</color>
+    <color name="md_onSurfaceVariant">#43483E</color>
+    <color name="md_surfaceContainerLowest">#FFFFFF</color>
+    <color name="md_surfaceContainerLow">#F7F8EF</color>
+    <color name="md_surfaceContainer">#F1F2E9</color>
+    <color name="md_surfaceContainerHigh">#ECEDE4</color>
+    <color name="md_surfaceContainerHighest">#E6E7DE</color>
+    <color name="md_outline">#74796D</color>
+    <color name="md_outlineVariant">#C4C8BA</color>
+</resources>

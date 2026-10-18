@@ -2,19 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/action_view_saved"
-        android:icon="@android:drawable/ic_menu_recent_history"
-        android:title="Saved" />
-    <item
-        android:id="@+id/action_settings"
-        android:icon="@android:drawable/ic_menu_preferences"
-        android:title="Settings" />
+        android:icon="@drawable/ic_history"
+        android:title="Histórico" />
     <item
         android:id="@+id/action_edit"
-        android:icon="@android:drawable/ic_menu_edit"
-        android:title="Edit" />
+        android:icon="@drawable/ic_filter"
+        android:title="Filtrar" />
     <item
         android:id="@+id/action_voice_notes"
-        android:icon="@android:drawable/ic_media_play"
-        android:title="Voz" />
+        android:icon="@drawable/ic_mic"
+        android:title="Áudios" />
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@drawable/ic_tune"
+        android:title="Ajustes" />
 
 </menu>

@@ -1,6 +1,5 @@
 package com.kpbird.nlsexample;
 
-import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
@@ -11,6 +10,8 @@ import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.view.View;
+import android.widget.TextView;
 import android.text.TextUtils;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String CHANNEL_ID = "nlsexample_channel";
     private RecyclerView recyclerView;
+    private TextView tvEmptyState;
     private NotificationAdapter adapter;
     private NotificationReceiver nReceiver;
 
@@ -38,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         recyclerView = findViewById(R.id.recyclerView);
+        tvEmptyState = findViewById(R.id.tv_empty_state);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         adapter = new NotificationAdapter(new ArrayList<>());
@@ -68,17 +72,15 @@ public class MainActivity extends AppCompatActivity {
                 mostrarHistoricoSalvo();
                 return true;
 
+            // As demais abas abrem outras telas; retornar false mantém "Histórico" selecionado
             } else if (itemId == R.id.action_settings) {
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-                return true;
 
             } else if (itemId == R.id.action_edit) {
                 startActivity(new Intent(MainActivity.this, EditActivity.class));
-                return true;
-                
+
             } else if (itemId == R.id.action_voice_notes) {
                 startActivity(new Intent(MainActivity.this, VoiceNotesActivity.class));
-                return true;
             }
 
             return false;
@@ -133,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
      * Exibe diálogo solicitando que o usuário conceda acesso às notificações.
      */
     private void showEnableNotificationListenerDialog() {
-        new AlertDialog.Builder(this)
+        new MaterialAlertDialogBuilder(this)
                 .setTitle("Permissão necessária")
                 .setMessage(
                         "Este app precisa de acesso às notificações para funcionar.\n\n" +
@@ -171,11 +173,16 @@ public class MainActivity extends AppCompatActivity {
         List<NotificationItem> items = NotificationDb.get(this).listarTodas();
         if (adapter != null) {
             adapter.updateData(items);
+            atualizarEstadoVazio();
 
             if (!items.isEmpty()) {
                 recyclerView.scrollToPosition(items.size() - 1);
             }
         }
+    }
+
+    private void atualizarEstadoVazio() {
+        tvEmptyState.setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
     }
 
     private void settings() {
@@ -197,6 +204,7 @@ public class MainActivity extends AppCompatActivity {
 
                 adapter.addItem(
                         new NotificationItem(texto));
+                atualizarEstadoVazio();
 
                 recyclerView.scrollToPosition(
                         adapter.getItemCount() - 1);

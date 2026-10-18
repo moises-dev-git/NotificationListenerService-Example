@@ -1,111 +1,209 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Settings"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="16dp"/>
-
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/switch_voice_notes"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Salvar WhatsApp Voice Notes"
-        android:textStyle="bold"
-        android:layout_marginBottom="8dp"/>
+        android:orientation="vertical"
+        android:padding="16dp">
 
-    <Button
-        android:id="@+id/btn_select_voice_notes_folder"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Selecionar Pasta do WhatsApp"
-        android:layout_marginBottom="8dp" />
+        <!-- Áudios do WhatsApp -->
+        <TextView
+            style="@style/SettingsSectionTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:text="Áudios do WhatsApp" />
 
-    <Button
-        android:id="@+id/btn_view_voice_notes"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Ver Voice Notes Salvos"
-        android:layout_marginBottom="16dp" />
+        <com.google.android.material.card.MaterialCardView
+            style="?attr/materialCardViewFilledStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Ignored Apps &amp; Words (pacotes, palavras ou expressões separadas por vírgula):"
-        android:textStyle="bold"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-    <EditText
-        android:id="@+id/edit_ignored_apps"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="com.whatsapp, promoção, aviso de segurança"
-        android:inputType="textMultiLine"
-        android:lines="3"
-        android:gravity="top"/>
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/switch_voice_notes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Salvar áudios recebidos"
+                    android:textAppearance="?attr/textAppearanceBodyLarge" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cancelar Notificações (Barra do Android)"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:text="Copia cada áudio assim que chega, mesmo que o remetente apague depois."
+                    android:textAppearance="?attr/textAppearanceBodySmall"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Pacotes a Cancelar (ex: com.spam, ...):"
-        android:textStyle="bold"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-    <EditText
-        android:id="@+id/edit_cancel_packages"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:lines="2"
-        android:gravity="top"/>
+                    <Button
+                        android:id="@+id/btn_select_voice_notes_folder"
+                        style="@style/Widget.Material3.Button.TonalButton.Icon"
+                    app:iconGravity="textStart"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        android:text="Pasta"
+                        app:icon="@drawable/ic_folder" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Palavras/Expressões a Cancelar (ex: promoção, ...):"
-        android:textStyle="bold"/>
+                    <Button
+                        android:id="@+id/btn_view_voice_notes"
+                        style="@style/Widget.Material3.Button.TonalButton.Icon"
+                    app:iconGravity="textStart"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Ver áudios"
+                        app:icon="@drawable/ic_mic" />
 
-    <EditText
-        android:id="@+id/edit_cancel_words"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:lines="2"
-        android:gravity="top"/>
+                </LinearLayout>
 
-    <Button
-        android:id="@+id/btn_save_settings"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Save All Settings"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"/>
+            </LinearLayout>
 
-    <Button
-        android:id="@+id/btn_export_json"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Export Log to JSON"
-        android:layout_marginBottom="8dp" />
+        </com.google.android.material.card.MaterialCardView>
 
-    <Button
-        android:id="@+id/btn_share_json"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Share Log (WhatsApp, etc.)" />
+        <!-- Filtros -->
+        <TextView
+            style="@style/SettingsSectionTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Filtros" />
 
-</LinearLayout>
+        <com.google.android.material.card.MaterialCardView
+            style="?attr/materialCardViewFilledStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Não salvar no histórico"
+                    app:helperText="Apps, palavras ou expressões, separados por vírgula">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_ignored_apps"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top"
+                        android:inputType="textMultiLine"
+                        android:minLines="3" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:hint="Remover da barra: apps"
+                    app:helperText="Pacotes, ex.: com.spam, com.loja">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_cancel_packages"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top"
+                        android:inputType="textMultiLine"
+                        android:minLines="2" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:hint="Remover da barra: palavras"
+                    app:helperText="Ex.: promoção, oferta">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_cancel_words"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top"
+                        android:inputType="textMultiLine"
+                        android:minLines="2" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/btn_save_settings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Salvar filtros" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Exportar -->
+        <TextView
+            style="@style/SettingsSectionTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Exportar histórico" />
+
+        <com.google.android.material.card.MaterialCardView
+            style="?attr/materialCardViewFilledStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <Button
+                    android:id="@+id/btn_export_json"
+                    style="@style/Widget.Material3.Button.TonalButton.Icon"
+                    app:iconGravity="textStart"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:text="Salvar JSON"
+                    app:icon="@drawable/ic_download" />
+
+                <Button
+                    android:id="@+id/btn_share_json"
+                    style="@style/Widget.Material3.Button.TonalButton.Icon"
+                    app:iconGravity="textStart"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Compartilhar"
+                    app:icon="@drawable/ic_share" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+</ScrollView>

@@ -2,18 +2,21 @@ package com.kpbird.nlsexample;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class EditActivity extends AppCompatActivity {
 
@@ -51,6 +54,18 @@ public class EditActivity extends AppCompatActivity {
 
         btnApplyFilter.setOnClickListener(v -> applyFilter());
 
+        // Botão de busca do teclado também aplica o filtro
+        TextView.OnEditorActionListener filtrarNoTeclado = (view, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                applyFilter();
+                return true;
+            }
+            return false;
+        };
+        editFilterApp.setOnEditorActionListener(filtrarNoTeclado);
+        editFilterDate.setOnEditorActionListener(filtrarNoTeclado);
+        editFilterText.setOnEditorActionListener(filtrarNoTeclado);
+
         btnDeleteFiltered.setOnClickListener(v -> confirmDelete());
     }
 
@@ -80,20 +95,20 @@ public class EditActivity extends AppCompatActivity {
         }
 
         adapter.updateData(new ArrayList<>(filteredItems));
-        tvMatchCount.setText("Matches: " + filteredItems.size() + " of " + allItems.size());
+        tvMatchCount.setText(String.format(Locale.getDefault(), "%,d de %,d", filteredItems.size(), allItems.size()));
     }
 
     private void confirmDelete() {
         if (filteredItems.isEmpty()) {
-            Toast.makeText(this, "No items to delete.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Nenhum item para apagar.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        new AlertDialog.Builder(this)
-                .setTitle("Confirm Deletion")
-                .setMessage("Are you sure you want to delete all " + filteredItems.size() + " filtered items?")
-                .setPositiveButton("Delete", (dialog, which) -> executeDelete())
-                .setNegativeButton("Cancel", null)
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("Apagar itens")
+                .setMessage("Apagar os " + filteredItems.size() + " itens filtrados do histórico?")
+                .setPositiveButton("Apagar", (dialog, which) -> executeDelete())
+                .setNegativeButton("Cancelar", null)
                 .show();
     }
 
@@ -101,7 +116,7 @@ public class EditActivity extends AppCompatActivity {
         // Apaga apenas as linhas filtradas no banco
         NotificationDb.get(this).apagar(filteredItems);
 
-        Toast.makeText(this, "Deleted " + filteredItems.size() + " items.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, filteredItems.size() + " itens apagados.", Toast.LENGTH_SHORT).show();
 
         loadAllItems();
     }

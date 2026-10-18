@@ -6,11 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.button.MaterialButton;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -104,9 +105,9 @@ public class VoiceNotesAdapter extends RecyclerView.Adapter<VoiceNotesAdapter.Vi
         File file = files.get(position);
         Context context = holder.itemView.getContext();
 
-        holder.tvFileName.setText(file.getName());
-        holder.tvFileDate.setText(dateFormat.format(new Date(file.lastModified())));
+        holder.tvFileDate.setText("Áudio de " + dateFormat.format(new Date(file.lastModified())));
         holder.tvFileSize.setText(Formatter.formatFileSize(context, file.length()));
+        holder.tvFileName.setText(file.getName());
 
         holder.cbSelect.setOnCheckedChangeListener(null);
         holder.cbSelect.setChecked(selectedFiles.contains(file));
@@ -122,9 +123,11 @@ public class VoiceNotesAdapter extends RecyclerView.Adapter<VoiceNotesAdapter.Vi
         holder.itemView.setOnClickListener(v -> holder.cbSelect.toggle());
 
         if (file.equals(playingFile)) {
-            holder.btnPlay.setImageResource(android.R.drawable.ic_media_pause);
+            holder.btnPlay.setIconResource(R.drawable.ic_pause);
+            holder.btnPlay.setContentDescription("Pausar");
         } else {
-            holder.btnPlay.setImageResource(android.R.drawable.ic_media_play);
+            holder.btnPlay.setIconResource(R.drawable.ic_play);
+            holder.btnPlay.setContentDescription("Tocar");
         }
 
         holder.btnPlay.setOnClickListener(v -> listener.onPlayClick(file));
@@ -140,7 +143,7 @@ public class VoiceNotesAdapter extends RecyclerView.Adapter<VoiceNotesAdapter.Vi
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvFileName, tvFileDate, tvFileSize;
         CheckBox cbSelect;
-        ImageButton btnPlay, btnShare, btnDelete;
+        MaterialButton btnPlay, btnShare, btnDelete;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
