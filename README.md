@@ -1,4 +1,4 @@
-# Notifications
+# Notilog
 
 **English** · [Português](README.pt-BR.md)
 
@@ -27,7 +27,7 @@ Personal data in the screenshots has been blurred.
 2. Open the app and allow **notification access** when asked (Settings › Notifications › Notification access).
 3. Optional: in Settings, turn on *Save incoming voice notes* and pick the WhatsApp *Voice Notes* folder.
 
-Requires Android 5.0 (API 21) or newer. All data stays on the device.
+Requires Android 5.0 (API 21) or newer. All data stays on the device – see the [privacy policy](PRIVACY.md).
 
 ## Credits
 

@@ -1,4 +1,4 @@
-# Notificações
+# Notilog
 
 [English](README.md) · **Português**
 
@@ -27,7 +27,7 @@ Os dados pessoais nas capturas foram desfocados.
 2. Abra o app e permita o **acesso às notificações** quando for pedido (Configurações › Notificações › Acesso às notificações).
 3. Opcional: nos Ajustes, ative *Salvar áudios recebidos* e escolha a pasta *Voice Notes* do WhatsApp.
 
-Requer Android 5.0 (API 21) ou mais recente. Todos os dados ficam no aparelho.
+Requer Android 5.0 (API 21) ou mais recente. Todos os dados ficam no aparelho; veja a [política de privacidade](PRIVACY.pt-BR.md).
 
 ## Créditos
 
