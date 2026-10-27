@@ -43,7 +43,7 @@ Aceite as declarações (políticas do programa e leis de exportação dos EUA).
 | **Apps de saúde / governamentais / recursos financeiros** | Não / Não / Nenhum recurso financeiro. |
 | **Segurança dos dados** | Ver seção 4. |
 | **Categoria** | Ferramentas (Tools). |
-| **Detalhes de contato** | E-mail: djxgauss@gmail.com (fica público na página do app). |
+| **Detalhes de contato** | E-mail: 404techmobile@gmail.com (fica público na página do app). |
 
 ## 4. Segurança dos dados
 

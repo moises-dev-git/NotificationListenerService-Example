@@ -46,4 +46,4 @@ Se esta política mudar, a nova versão será publicada neste mesmo endereço, c
 
 ## Contato
 
-djxgauss@gmail.com
+404techmobile@gmail.com
