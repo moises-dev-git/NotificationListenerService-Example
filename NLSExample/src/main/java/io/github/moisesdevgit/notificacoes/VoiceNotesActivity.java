@@ -10,7 +10,6 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,7 +19,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.io.File;
 import java.util.List;
 
-public class VoiceNotesActivity extends AppCompatActivity {
+public class VoiceNotesActivity extends BaseActivity {
 
     private RecyclerView recyclerView;
     private VoiceNotesAdapter adapter;

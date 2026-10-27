@@ -4,7 +4,7 @@
         Tema Material 3. No Android 12+ as cores vêm do papel de parede (Material You,
         aplicado em NotificationsApp); a paleta verde abaixo é usada nas versões anteriores.
     -->
-    <style name="AppTheme" parent="Theme.Material3.DayNight">
+    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/md_primary</item>
         <item name="colorOnPrimary">@color/md_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_primaryContainer</item>

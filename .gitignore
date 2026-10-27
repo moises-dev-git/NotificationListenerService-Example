@@ -19,3 +19,8 @@ local.properties
 build/
 app/build/
 NLSExample/build/
+
+# Assinatura de release (chave e senha nunca vão para o Git)
+keystore.properties
+*.jks
+*.keystore

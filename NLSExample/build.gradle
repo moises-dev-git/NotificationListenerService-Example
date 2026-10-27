@@ -3,17 +3,43 @@ plugins {
     // id 'org.jetbrains.kotlin.android' version '2.0.0' // uncomment if using Kotlin
 }
 
+// Chave de upload do Google Play: lida de keystore.properties (fora do Git)
+def keystorePropertiesFile = rootProject.file('keystore.properties')
+def keystoreProperties = new Properties()
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
 android {
     // CORREÇÃO: Define o namespace exigido pelo AGP 8+
     namespace "io.github.moisesdevgit.notificacoes"
-    compileSdk 34
+    compileSdk 36
 
     defaultConfig {
         applicationId "io.github.moisesdevgit.notificacoes"
         minSdk 21
-        targetSdk 34
+        targetSdk 36
         versionCode 1
         versionName "1.0"
+    }
+
+    signingConfigs {
+        if (keystorePropertiesFile.exists()) {
+            upload {
+                storeFile file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            if (keystorePropertiesFile.exists()) {
+                signingConfig signingConfigs.upload
+            }
+        }
     }
 
     compileOptions {
