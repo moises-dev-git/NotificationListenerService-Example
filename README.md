@@ -21,7 +21,8 @@ NotificationListenerService provides facility to fetch active notifications usin
 ##Note
 User require to enable notification permission from "Settings > Security > Notification access".
 
-![Mou icon](http://1.bp.blogspot.com/-7Q9G72-ZLCw/UfirCZP-H_I/AAAAAAAAEOk/aqX_YHs6s6Q/s400/device-2013-07-31-113010.png)
-![Mou icon](http://1.bp.blogspot.com/-h_bFIcDWWp8/UfirCzDrC_I/AAAAAAAAEO0/9_aMH5EM6Dg/s400/device-2013-07-31-113539.png)
-![Mou icon](http://2.bp.blogspot.com/-thl_wNKzILI/UfirDX6NR2I/AAAAAAAAEO4/_o5FWLmkJ2o/s400/device-2013-07-31-113701.png)
-![Mou icon](http://1.bp.blogspot.com/-5KyUJQVOVzE/UfirDhqpFzI/AAAAAAAAEPA/RiZoI9dF--Q/s400/device-2013-07-31-113720.png)
+## Screenshots
+
+| Histórico | Filtrar | Áudios | Ajustes |
+|:---:|:---:|:---:|:---:|
+| <img src="screenshots/1_historico.png" width="200"> | <img src="screenshots/2_filtrar.png" width="200"> | <img src="screenshots/3_audios.png" width="200"> | <img src="screenshots/4_ajustes.png" width="200"> |
