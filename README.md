@@ -1,28 +1,34 @@
-NotificationListenerService-Example
-===================================
+# Notifications
 
-##Introduction
-NotificationListenerService is introduced in Android 4.3 (API 18). It allows an application to receive information about notifications as it creates or removes. NotificationListenerService class is derived from the Service class. It has two abstract methods namely 1. onNotificationPosted 2. onNotificationRemoved.  
-To use NotificationListenerService, we need to create a java file which extends NotificationListenerService and implement two callback methods. Both methods have a parameter named "sbn", which is an object of StatusBarNotification class. StatusBarNotification provides necessary information about Notifications.
-NotificationListenerService provides facility to fetch active notifications using getActiveNotifications and also provides a feature to remove notifications using cancelAllNotifications.
+**English** · [Português](README.pt-BR.md)
 
-##Useful Methods
-1. NotificationListenerService
-	* onNotificationPosted
-	* onNotificationRemoved
-2. StatusBarNotification
-	* getId
-	* getNotification
-	* getPackageName
-	* getPostTime
-	* isClearable
-	* isOngoing
+Android app that keeps a history of every notification you receive, so you can read them later even after they are dismissed or deleted by the sender.
 
-##Note
-User require to enable notification permission from "Settings > Security > Notification access".
+## Features
+
+- **History** – every notification is saved locally (SQLite) with app, title, text and time.
+- **Filter** – search the history by app, date or text, and delete the matching items.
+- **WhatsApp voice notes** – copies each incoming voice note as soon as it arrives, so it stays available even if the sender deletes it.
+- **Filters** – skip apps, words or phrases you don't want in the history, and automatically dismiss notifications from the status bar.
+- **Export** – save or share the full history as JSON.
+- **Language** – English and Portuguese, following the system or chosen in Settings.
 
 ## Screenshots
 
-| Histórico | Filtrar | Áudios | Ajustes |
+| History | Filter | Voice notes | Settings |
 |:---:|:---:|:---:|:---:|
-| <img src="screenshots/1_historico.png" width="200"> | <img src="screenshots/2_filtrar.png" width="200"> | <img src="screenshots/3_audios.png" width="200"> | <img src="screenshots/4_ajustes.png" width="200"> |
+| <img src="screenshots/en/1_history.png" width="200"> | <img src="screenshots/en/2_filter.png" width="200"> | <img src="screenshots/en/3_voice_notes.png" width="200"> | <img src="screenshots/en/4_settings.png" width="200"> |
+
+Personal data in the screenshots has been blurred.
+
+## Setup
+
+1. Build and install: `./gradlew :NLSExample:installDebug`
+2. Open the app and allow **notification access** when asked (Settings › Notifications › Notification access).
+3. Optional: in Settings, turn on *Save incoming voice notes* and pick the WhatsApp *Voice Notes* folder.
+
+Requires Android 5.0 (API 21) or newer. All data stays on the device.
+
+## Credits
+
+Started as a fork of [kpbird/NotificationListenerService-Example](https://github.com/kpbird/NotificationListenerService-Example), an example of Android's `NotificationListenerService` API.
