@@ -16,7 +16,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class EditActivity extends AppCompatActivity {
 
@@ -95,20 +94,20 @@ public class EditActivity extends AppCompatActivity {
         }
 
         adapter.updateData(new ArrayList<>(filteredItems));
-        tvMatchCount.setText(String.format(Locale.getDefault(), "%,d de %,d", filteredItems.size(), allItems.size()));
+        tvMatchCount.setText(getString(R.string.filter_match_count, filteredItems.size(), allItems.size()));
     }
 
     private void confirmDelete() {
         if (filteredItems.isEmpty()) {
-            Toast.makeText(this, "Nenhum item para apagar.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.filter_nothing_to_delete, Toast.LENGTH_SHORT).show();
             return;
         }
 
         new MaterialAlertDialogBuilder(this)
-                .setTitle("Apagar itens")
-                .setMessage("Apagar os " + filteredItems.size() + " itens filtrados do histórico?")
-                .setPositiveButton("Apagar", (dialog, which) -> executeDelete())
-                .setNegativeButton("Cancelar", null)
+                .setTitle(R.string.filter_delete_title)
+                .setMessage(getResources().getQuantityString(R.plurals.filter_delete_message, filteredItems.size(), filteredItems.size()))
+                .setPositiveButton(R.string.action_delete, (dialog, which) -> executeDelete())
+                .setNegativeButton(R.string.action_cancel, null)
                 .show();
     }
 
@@ -116,7 +115,7 @@ public class EditActivity extends AppCompatActivity {
         // Apaga apenas as linhas filtradas no banco
         NotificationDb.get(this).apagar(filteredItems);
 
-        Toast.makeText(this, filteredItems.size() + " itens apagados.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getResources().getQuantityString(R.plurals.filter_items_deleted, filteredItems.size(), filteredItems.size()), Toast.LENGTH_SHORT).show();
 
         loadAllItems();
     }

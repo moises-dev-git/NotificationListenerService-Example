@@ -14,7 +14,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.os.LocaleListCompat;
 import androidx.core.content.FileProvider;
+
+import com.google.android.material.button.MaterialButtonToggleGroup;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -69,7 +73,7 @@ public class SettingsActivity extends AppCompatActivity {
                     .putString(KEY_CANCEL_PACKAGES, editCancelPackages.getText().toString())
                     .putString(KEY_CANCEL_WORDS, editCancelWords.getText().toString())
                     .apply();
-            Toast.makeText(this, "Filtros salvos!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.settings_filters_saved, Toast.LENGTH_SHORT).show();
         });
 
         btnExportJson.setOnClickListener(v -> exportToJson(false));
@@ -84,7 +88,7 @@ public class SettingsActivity extends AppCompatActivity {
         switchVoiceNotes.setOnCheckedChangeListener((buttonView, isChecked) -> {
             settingsPrefs.edit().putBoolean(KEY_VOICE_NOTES_ENABLED, isChecked).apply();
             if (isChecked && settingsPrefs.getString(KEY_VOICE_NOTES_URI, null) == null) {
-                Toast.makeText(this, "Por favor, selecione a pasta do WhatsApp", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.settings_select_whatsapp_folder, Toast.LENGTH_LONG).show();
             }
         });
 
@@ -92,6 +96,38 @@ public class SettingsActivity extends AppCompatActivity {
 
         btnViewVoiceNotes.setOnClickListener(v -> {
             startActivity(new Intent(SettingsActivity.this, VoiceNotesActivity.class));
+        });
+
+        setupLanguageToggle();
+    }
+
+    /**
+     * Idioma do app: segue o sistema ou força inglês/português.
+     * O AppCompat guarda a escolha e recria as telas no novo idioma.
+     */
+    private void setupLanguageToggle() {
+        MaterialButtonToggleGroup toggleLanguage = findViewById(R.id.toggle_language);
+
+        String current = AppCompatDelegate.getApplicationLocales().toLanguageTags();
+        if (current.startsWith("en")) {
+            toggleLanguage.check(R.id.btn_language_english);
+        } else if (current.startsWith("pt")) {
+            toggleLanguage.check(R.id.btn_language_portuguese);
+        } else {
+            toggleLanguage.check(R.id.btn_language_system);
+        }
+
+        toggleLanguage.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+            if (!isChecked) return;
+            String tags = "";
+            if (checkedId == R.id.btn_language_english) {
+                tags = "en";
+            } else if (checkedId == R.id.btn_language_portuguese) {
+                tags = "pt-BR";
+            }
+            if (!tags.equals(AppCompatDelegate.getApplicationLocales().toLanguageTags())) {
+                AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(tags));
+            }
         });
     }
 
@@ -107,7 +143,7 @@ public class SettingsActivity extends AppCompatActivity {
 
             startActivityForResult(intent, REQUEST_CODE_WHATSAPP_FOLDER);
         } catch (Exception e) {
-            Toast.makeText(this, "Não foi possível abrir o seletor de pastas", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.settings_folder_picker_error, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -128,7 +164,7 @@ public class SettingsActivity extends AppCompatActivity {
                     SharedPreferences prefs = getSharedPreferences(SETTINGS_PREFS, Context.MODE_PRIVATE);
                     prefs.edit().putString(KEY_VOICE_NOTES_URI, treeUri.toString()).apply();
                     
-                    Toast.makeText(this, "Pasta configurada. Processando arquivos existentes...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.settings_folder_set, Toast.LENGTH_SHORT).show();
                     
                     new Thread(() -> {
                         WhatsAppVoiceNotesUtils.seedExistingFiles(getApplicationContext());
@@ -195,18 +231,18 @@ public class SettingsActivity extends AppCompatActivity {
                 location = exportFile.getAbsolutePath();
             }
 
-            Toast.makeText(this, "Exportado para " + location, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.settings_exported_to, location), Toast.LENGTH_LONG).show();
 
             if (share) {
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("application/json");
                 shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
                 shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                startActivity(Intent.createChooser(shareIntent, "Compartilhar histórico"));
+                startActivity(Intent.createChooser(shareIntent, getString(R.string.settings_share_history)));
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, "Falha ao exportar: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.settings_export_failed, e.getMessage()), Toast.LENGTH_SHORT).show();
         }
     }
 }

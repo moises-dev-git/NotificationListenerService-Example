@@ -89,7 +89,7 @@ public class VoiceNotesActivity extends AppCompatActivity {
         cbSelectAll.setChecked(totalCount > 0 && selectedCount == totalCount);
         isUpdatingSelectAllCheck = false;
 
-        btnDeleteSelected.setText("Apagar (" + selectedCount + ")");
+        btnDeleteSelected.setText(getString(R.string.voice_notes_delete_selected, selectedCount));
         btnDeleteSelected.setEnabled(selectedCount > 0);
 
         if (totalCount == 0) {
@@ -103,20 +103,20 @@ public class VoiceNotesActivity extends AppCompatActivity {
 
     private void confirmDelete(File file) {
         new MaterialAlertDialogBuilder(this)
-                .setTitle("Apagar áudio")
-                .setMessage("Apagar " + file.getName() + "?")
-                .setPositiveButton("Apagar", (dialog, which) -> {
+                .setTitle(R.string.voice_note_delete_title)
+                .setMessage(getString(R.string.voice_note_delete_message, file.getName()))
+                .setPositiveButton(R.string.action_delete, (dialog, which) -> {
                     if (file.equals(currentPlayingFile)) {
                         stopPlaying();
                     }
                     if (file.delete()) {
-                        Toast.makeText(VoiceNotesActivity.this, "Arquivo apagado.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(VoiceNotesActivity.this, R.string.voice_note_deleted, Toast.LENGTH_SHORT).show();
                         refreshData();
                     } else {
-                        Toast.makeText(VoiceNotesActivity.this, "Erro ao apagar arquivo.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(VoiceNotesActivity.this, R.string.voice_note_delete_error, Toast.LENGTH_SHORT).show();
                     }
                 })
-                .setNegativeButton("Cancelar", null)
+                .setNegativeButton(R.string.action_cancel, null)
                 .show();
     }
 
@@ -124,14 +124,13 @@ public class VoiceNotesActivity extends AppCompatActivity {
         List<File> selectedFiles = adapter.getSelectedFiles();
         if (selectedFiles.isEmpty()) return;
 
-        String message = selectedFiles.size() == 1
-                ? "Apagar o áudio selecionado?"
-                : "Apagar os " + selectedFiles.size() + " áudios selecionados?";
+        String message = getResources().getQuantityString(
+                R.plurals.voice_notes_delete_message, selectedFiles.size(), selectedFiles.size());
 
         new MaterialAlertDialogBuilder(this)
-                .setTitle("Apagar áudios")
+                .setTitle(R.string.voice_notes_delete_title)
                 .setMessage(message)
-                .setPositiveButton("Apagar", (dialog, which) -> {
+                .setPositiveButton(R.string.action_delete, (dialog, which) -> {
                     int deletedCount = 0;
                     for (File file : selectedFiles) {
                         if (file.equals(currentPlayingFile)) {
@@ -141,10 +140,10 @@ public class VoiceNotesActivity extends AppCompatActivity {
                             deletedCount++;
                         }
                     }
-                    Toast.makeText(VoiceNotesActivity.this, deletedCount + (deletedCount == 1 ? " áudio apagado." : " áudios apagados."), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(VoiceNotesActivity.this, getResources().getQuantityString(R.plurals.voice_notes_deleted, deletedCount, deletedCount), Toast.LENGTH_SHORT).show();
                     refreshData();
                 })
-                .setNegativeButton("Cancelar", null)
+                .setNegativeButton(R.string.action_cancel, null)
                 .show();
     }
 
@@ -166,7 +165,7 @@ public class VoiceNotesActivity extends AppCompatActivity {
             adapter.setPlayingFile(file);
         } catch (Exception e) {
             stopPlaying();
-            Toast.makeText(this, "Erro ao reproduzir o áudio.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.voice_note_play_error, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -193,9 +192,9 @@ public class VoiceNotesActivity extends AppCompatActivity {
             shareIntent.setType("audio/*");
             shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
             shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            startActivity(Intent.createChooser(shareIntent, "Compartilhar áudio"));
+            startActivity(Intent.createChooser(shareIntent, getString(R.string.voice_note_share_title)));
         } catch (Exception e) {
-            Toast.makeText(this, "Erro ao compartilhar.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.voice_note_share_error, Toast.LENGTH_SHORT).show();
         }
     }
 

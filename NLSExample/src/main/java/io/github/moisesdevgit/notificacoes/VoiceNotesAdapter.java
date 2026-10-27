@@ -105,7 +105,7 @@ public class VoiceNotesAdapter extends RecyclerView.Adapter<VoiceNotesAdapter.Vi
         File file = files.get(position);
         Context context = holder.itemView.getContext();
 
-        holder.tvFileDate.setText("Áudio de " + dateFormat.format(new Date(file.lastModified())));
+        holder.tvFileDate.setText(context.getString(R.string.voice_note_date, dateFormat.format(new Date(file.lastModified()))));
         holder.tvFileSize.setText(Formatter.formatFileSize(context, file.length()));
         holder.tvFileName.setText(file.getName());
 
@@ -124,10 +124,10 @@ public class VoiceNotesAdapter extends RecyclerView.Adapter<VoiceNotesAdapter.Vi
 
         if (file.equals(playingFile)) {
             holder.btnPlay.setIconResource(R.drawable.ic_pause);
-            holder.btnPlay.setContentDescription("Pausar");
+            holder.btnPlay.setContentDescription(context.getString(R.string.action_pause));
         } else {
             holder.btnPlay.setIconResource(R.drawable.ic_play);
-            holder.btnPlay.setContentDescription("Tocar");
+            holder.btnPlay.setContentDescription(context.getString(R.string.action_play));
         }
 
         holder.btnPlay.setOnClickListener(v -> listener.onPlayClick(file));

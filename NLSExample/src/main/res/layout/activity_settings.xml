@@ -10,13 +10,62 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Áudios do WhatsApp -->
+        <!-- Idioma -->
         <TextView
             style="@style/SettingsSectionTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="0dp"
-            android:text="Áudios do WhatsApp" />
+            android:text="@string/settings_language" />
+
+        <com.google.android.material.card.MaterialCardView
+            style="?attr/materialCardViewFilledStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp">
+
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/toggle_language"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                app:selectionRequired="true"
+                app:singleSelection="true">
+
+                <Button
+                    android:id="@+id/btn_language_system"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/language_system" />
+
+                <Button
+                    android:id="@+id/btn_language_english"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/language_english" />
+
+                <Button
+                    android:id="@+id/btn_language_portuguese"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/language_portuguese" />
+
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Áudios do WhatsApp -->
+        <TextView
+            style="@style/SettingsSectionTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_voice_notes" />
 
         <com.google.android.material.card.MaterialCardView
             style="?attr/materialCardViewFilledStyle"
@@ -34,14 +83,14 @@
                     android:id="@+id/switch_voice_notes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Salvar áudios recebidos"
+                    android:text="@string/settings_save_voice_notes"
                     android:textAppearance="?attr/textAppearanceBodyLarge" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
-                    android:text="Copia cada áudio assim que chega, mesmo que o remetente apague depois."
+                    android:text="@string/settings_save_voice_notes_summary"
                     android:textAppearance="?attr/textAppearanceBodySmall"
                     android:textColor="?attr/colorOnSurfaceVariant" />
 
@@ -58,7 +107,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginEnd="8dp"
-                        android:text="Pasta"
+                        android:text="@string/settings_folder"
                         app:icon="@drawable/ic_folder" />
 
                     <Button
@@ -68,7 +117,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Ver áudios"
+                        android:text="@string/settings_view_voice_notes"
                         app:icon="@drawable/ic_mic" />
 
                 </LinearLayout>
@@ -82,7 +131,7 @@
             style="@style/SettingsSectionTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Filtros" />
+            android:text="@string/settings_filters" />
 
         <com.google.android.material.card.MaterialCardView
             style="?attr/materialCardViewFilledStyle"
@@ -100,8 +149,8 @@
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Não salvar no histórico"
-                    app:helperText="Apps, palavras ou expressões, separados por vírgula">
+                    android:hint="@string/settings_ignored_hint"
+                    app:helperText="@string/settings_ignored_helper">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_ignored_apps"
@@ -118,8 +167,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:hint="Remover da barra: apps"
-                    app:helperText="Pacotes, ex.: com.spam, com.loja">
+                    android:hint="@string/settings_cancel_packages_hint"
+                    app:helperText="@string/settings_cancel_packages_helper">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_cancel_packages"
@@ -136,8 +185,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:hint="Remover da barra: palavras"
-                    app:helperText="Ex.: promoção, oferta">
+                    android:hint="@string/settings_cancel_words_hint"
+                    app:helperText="@string/settings_cancel_words_helper">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_cancel_words"
@@ -154,7 +203,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="Salvar filtros" />
+                    android:text="@string/settings_save_filters" />
 
             </LinearLayout>
 
@@ -165,7 +214,7 @@
             style="@style/SettingsSectionTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Exportar histórico" />
+            android:text="@string/settings_export" />
 
         <com.google.android.material.card.MaterialCardView
             style="?attr/materialCardViewFilledStyle"
@@ -187,7 +236,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginEnd="8dp"
-                    android:text="Salvar JSON"
+                    android:text="@string/settings_export_json"
                     app:icon="@drawable/ic_download" />
 
                 <Button
@@ -197,7 +246,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Compartilhar"
+                    android:text="@string/action_share"
                     app:icon="@drawable/ic_share" />
 
             </LinearLayout>

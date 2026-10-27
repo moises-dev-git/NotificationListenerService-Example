@@ -136,13 +136,11 @@ public class MainActivity extends AppCompatActivity {
      */
     private void showEnableNotificationListenerDialog() {
         new MaterialAlertDialogBuilder(this)
-                .setTitle("Permissão necessária")
-                .setMessage(
-                        "Este app precisa de acesso às notificações para funcionar.\n\n" +
-                                "Toque em \"Configurações\", ative a opção para este app e volte.")
-                .setPositiveButton("Configurações", (dialog, which) -> startActivity(
+                .setTitle(R.string.permission_title)
+                .setMessage(R.string.permission_message)
+                .setPositiveButton(R.string.permission_open_settings, (dialog, which) -> startActivity(
                         new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)))
-                .setNegativeButton("Cancelar", null)
+                .setNegativeButton(R.string.action_cancel, null)
                 .setCancelable(false)
                 .show();
     }
@@ -155,11 +153,10 @@ public class MainActivity extends AppCompatActivity {
 
             NotificationChannel channel = new NotificationChannel(
                     CHANNEL_ID,
-                    "NLS Example Channel",
+                    getString(R.string.channel_name),
                     NotificationManager.IMPORTANCE_DEFAULT);
 
-            channel.setDescription(
-                    "Canal de teste para o NotificationListenerService");
+            channel.setDescription(getString(R.string.channel_description));
 
             NotificationManager nm = getSystemService(NotificationManager.class);
 

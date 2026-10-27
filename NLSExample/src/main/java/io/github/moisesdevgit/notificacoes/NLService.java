@@ -134,7 +134,7 @@ public class NLService extends NotificationListenerService {
             }
 
             // Toast rápido confirmando o salvamento local
-            Toast.makeText(getApplicationContext(), "Notificação salva localmente!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.notification_saved, Toast.LENGTH_SHORT).show();
 
             // Log para conferência no Logcat
             Log.d(TAG, "Salvo no banco: " + novoTexto);

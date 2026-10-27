@@ -24,7 +24,7 @@
         android:drawableTop="@drawable/ic_notifications"
         android:drawablePadding="12dp"
         android:drawableTint="?attr/colorOnSurfaceVariant"
-        android:text="Nenhuma notificação salva ainda."
+        android:text="@string/empty_notifications"
         android:textAppearance="?attr/textAppearanceBodyLarge"
         android:textColor="?attr/colorOnSurfaceVariant"
         android:visibility="gone" />

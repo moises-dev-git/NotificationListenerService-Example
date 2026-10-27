@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Notificações</string>
+    <string name="action_settings">Ajustes</string>
+
+    <!-- Navegação -->
+    <string name="nav_history">Histórico</string>
+    <string name="nav_filter">Filtrar</string>
+    <string name="nav_voice_notes">Áudios</string>
+    <string name="nav_settings">Ajustes</string>
+
+    <!-- Ações comuns -->
+    <string name="action_delete">Apagar</string>
+    <string name="action_cancel">Cancelar</string>
+    <string name="action_share">Compartilhar</string>
+    <string name="action_play">Tocar</string>
+    <string name="action_pause">Pausar</string>
+
+    <!-- Histórico -->
+    <string name="empty_notifications">Nenhuma notificação salva ainda.</string>
+    <string name="permission_title">Permissão necessária</string>
+    <string name="permission_message">Este app precisa de acesso às notificações para funcionar.\n\nToque em \"Configurações\", ative a opção para este app e volte.</string>
+    <string name="permission_open_settings">Configurações</string>
+    <string name="channel_name">Notificações de teste</string>
+    <string name="channel_description">Canal de teste para o NotificationListenerService</string>
+    <string name="notification_saved">Notificação salva localmente!</string>
+
+    <!-- Filtrar -->
+    <string name="title_filter_history">Filtrar histórico</string>
+    <string name="filter_app_hint">App (ex.: com.whatsapp)</string>
+    <string name="filter_date_hint">Data</string>
+    <string name="filter_text_hint">Texto</string>
+    <string name="filter_apply">Filtrar</string>
+    <string name="filter_match_count">%1$,d de %2$,d</string>
+    <string name="filter_nothing_to_delete">Nenhum item para apagar.</string>
+    <string name="filter_delete_title">Apagar itens</string>
+    <plurals name="filter_delete_message">
+        <item quantity="one">Apagar o item filtrado do histórico?</item>
+        <item quantity="other">Apagar os %d itens filtrados do histórico?</item>
+    </plurals>
+    <plurals name="filter_items_deleted">
+        <item quantity="one">%d item apagado.</item>
+        <item quantity="other">%d itens apagados.</item>
+    </plurals>
+
+    <!-- Áudios -->
+    <string name="title_voice_notes">Áudios do WhatsApp</string>
+    <string name="voice_notes_select_all">Selecionar tudo</string>
+    <string name="voice_notes_delete_selected">Apagar (%d)</string>
+    <string name="voice_notes_empty">Nenhum áudio salvo.</string>
+    <string name="voice_note_date">Áudio de %s</string>
+    <string name="voice_note_delete_title">Apagar áudio</string>
+    <string name="voice_note_delete_message">Apagar %s?</string>
+    <string name="voice_note_deleted">Arquivo apagado.</string>
+    <string name="voice_note_delete_error">Erro ao apagar arquivo.</string>
+    <string name="voice_notes_delete_title">Apagar áudios</string>
+    <plurals name="voice_notes_delete_message">
+        <item quantity="one">Apagar o áudio selecionado?</item>
+        <item quantity="other">Apagar os %d áudios selecionados?</item>
+    </plurals>
+    <plurals name="voice_notes_deleted">
+        <item quantity="one">%d áudio apagado.</item>
+        <item quantity="other">%d áudios apagados.</item>
+    </plurals>
+    <string name="voice_note_play_error">Erro ao reproduzir o áudio.</string>
+    <string name="voice_note_share_title">Compartilhar áudio</string>
+    <string name="voice_note_share_error">Erro ao compartilhar.</string>
+
+    <!-- Ajustes -->
+    <string name="settings_language">Idioma</string>
+    <string name="language_system">Sistema</string>
+    <string name="settings_save_voice_notes">Salvar áudios recebidos</string>
+    <string name="settings_save_voice_notes_summary">Copia cada áudio assim que chega, mesmo que o remetente apague depois.</string>
+    <string name="settings_folder">Pasta</string>
+    <string name="settings_view_voice_notes">Ver áudios</string>
+    <string name="settings_select_whatsapp_folder">Por favor, selecione a pasta do WhatsApp</string>
+    <string name="settings_folder_picker_error">Não foi possível abrir o seletor de pastas</string>
+    <string name="settings_folder_set">Pasta configurada. Processando arquivos existentes…</string>
+    <string name="settings_filters">Filtros</string>
+    <string name="settings_ignored_hint">Não salvar no histórico</string>
+    <string name="settings_ignored_helper">Apps, palavras ou expressões, separados por vírgula</string>
+    <string name="settings_cancel_packages_hint">Remover da barra: apps</string>
+    <string name="settings_cancel_packages_helper">Pacotes, ex.: com.spam, com.loja</string>
+    <string name="settings_cancel_words_hint">Remover da barra: palavras</string>
+    <string name="settings_cancel_words_helper">Ex.: promoção, oferta</string>
+    <string name="settings_save_filters">Salvar filtros</string>
+    <string name="settings_filters_saved">Filtros salvos!</string>
+    <string name="settings_export">Exportar histórico</string>
+    <string name="settings_export_json">Salvar JSON</string>
+    <string name="settings_exported_to">Exportado para %s</string>
+    <string name="settings_share_history">Compartilhar histórico</string>
+    <string name="settings_export_failed">Falha ao exportar: %s</string>
+
+</resources>

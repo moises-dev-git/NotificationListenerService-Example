@@ -1,8 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Notificações</string>
+    <string name="app_name">Notifications</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+
+    <!-- Navegação -->
+    <string name="nav_history">History</string>
+    <string name="nav_filter">Filter</string>
+    <string name="nav_voice_notes">Voice notes</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Ações comuns -->
+    <string name="action_delete">Delete</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_share">Share</string>
+    <string name="action_play">Play</string>
+    <string name="action_pause">Pause</string>
+
+    <!-- Histórico -->
+    <string name="empty_notifications">No notifications saved yet.</string>
+    <string name="permission_title">Permission required</string>
+    <string name="permission_message">This app needs notification access to work.\n\nTap \"Settings\", turn it on for this app and come back.</string>
+    <string name="permission_open_settings">Settings</string>
+    <string name="channel_name">Test notifications</string>
+    <string name="channel_description">Test channel for the NotificationListenerService</string>
+    <string name="notification_saved">Notification saved locally!</string>
+
+    <!-- Filtrar -->
+    <string name="title_filter_history">Filter history</string>
+    <string name="filter_app_hint">App (e.g. com.whatsapp)</string>
+    <string name="filter_date_hint">Date</string>
+    <string name="filter_text_hint">Text</string>
+    <string name="filter_apply">Filter</string>
+    <string name="filter_match_count">%1$,d of %2$,d</string>
+    <string name="filter_nothing_to_delete">No items to delete.</string>
+    <string name="filter_delete_title">Delete items</string>
+    <plurals name="filter_delete_message">
+        <item quantity="one">Delete the filtered item from history?</item>
+        <item quantity="other">Delete the %d filtered items from history?</item>
+    </plurals>
+    <plurals name="filter_items_deleted">
+        <item quantity="one">%d item deleted.</item>
+        <item quantity="other">%d items deleted.</item>
+    </plurals>
+
+    <!-- Áudios -->
+    <string name="title_voice_notes">WhatsApp voice notes</string>
+    <string name="voice_notes_select_all">Select all</string>
+    <string name="voice_notes_delete_selected">Delete (%d)</string>
+    <string name="voice_notes_empty">No voice notes saved.</string>
+    <string name="voice_note_date">Voice note from %s</string>
+    <string name="voice_note_delete_title">Delete voice note</string>
+    <string name="voice_note_delete_message">Delete %s?</string>
+    <string name="voice_note_deleted">File deleted.</string>
+    <string name="voice_note_delete_error">Error deleting file.</string>
+    <string name="voice_notes_delete_title">Delete voice notes</string>
+    <plurals name="voice_notes_delete_message">
+        <item quantity="one">Delete the selected voice note?</item>
+        <item quantity="other">Delete the %d selected voice notes?</item>
+    </plurals>
+    <plurals name="voice_notes_deleted">
+        <item quantity="one">%d voice note deleted.</item>
+        <item quantity="other">%d voice notes deleted.</item>
+    </plurals>
+    <string name="voice_note_play_error">Error playing the voice note.</string>
+    <string name="voice_note_share_title">Share voice note</string>
+    <string name="voice_note_share_error">Error sharing.</string>
+
+    <!-- Ajustes -->
+    <string name="settings_language">Language</string>
+    <string name="language_system">System</string>
+    <string name="language_english" translatable="false">English</string>
+    <string name="language_portuguese" translatable="false">Português</string>
+    <string name="settings_save_voice_notes">Save incoming voice notes</string>
+    <string name="settings_save_voice_notes_summary">Copies each voice note as soon as it arrives, even if the sender deletes it later.</string>
+    <string name="settings_folder">Folder</string>
+    <string name="settings_view_voice_notes">View voice notes</string>
+    <string name="settings_select_whatsapp_folder">Please select the WhatsApp folder</string>
+    <string name="settings_folder_picker_error">Couldn\'t open the folder picker</string>
+    <string name="settings_folder_set">Folder set. Processing existing files…</string>
+    <string name="settings_filters">Filters</string>
+    <string name="settings_ignored_hint">Don\'t save to history</string>
+    <string name="settings_ignored_helper">Apps, words or phrases, separated by commas</string>
+    <string name="settings_cancel_packages_hint">Dismiss from status bar: apps</string>
+    <string name="settings_cancel_packages_helper">Packages, e.g. com.spam, com.store</string>
+    <string name="settings_cancel_words_hint">Dismiss from status bar: words</string>
+    <string name="settings_cancel_words_helper">E.g. promotion, offer</string>
+    <string name="settings_save_filters">Save filters</string>
+    <string name="settings_filters_saved">Filters saved!</string>
+    <string name="settings_export">Export history</string>
+    <string name="settings_export_json">Save JSON</string>
+    <string name="settings_exported_to">Exported to %s</string>
+    <string name="settings_share_history">Share history</string>
+    <string name="settings_export_failed">Export failed: %s</string>
 
 </resources>

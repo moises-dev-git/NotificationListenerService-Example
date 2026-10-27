@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="12dp"
-            android:contentDescription="Tocar"
+            android:contentDescription="@string/action_play"
             app:icon="@drawable/ic_play" />
 
         <LinearLayout
@@ -69,7 +69,7 @@
             style="?attr/materialIconButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="Compartilhar"
+            android:contentDescription="@string/action_share"
             app:icon="@drawable/ic_share" />
 
         <com.google.android.material.button.MaterialButton
@@ -77,7 +77,7 @@
             style="?attr/materialIconButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="Apagar"
+            android:contentDescription="@string/action_delete"
             app:icon="@drawable/ic_delete" />
 
     </LinearLayout>
