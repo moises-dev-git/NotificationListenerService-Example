@@ -1,4 +1,4 @@
-package com.kpbird.nlsexample;
+package io.github.moisesdevgit.notificacoes;
 
 import android.content.Context;
 import android.content.Intent;
@@ -140,7 +140,7 @@ public class NLService extends NotificationListenerService {
             Log.d(TAG, "Salvo no banco: " + novoTexto);
 
             // Avisa a MainActivity que há uma nova notificação
-            Intent intent = new Intent("com.kpbird.nlsexample.NOTIFICATION_LISTENER_EXAMPLE");
+            Intent intent = new Intent("io.github.moisesdevgit.notificacoes.NOTIFICATION_LISTENER_EXAMPLE");
             intent.setPackage(getPackageName());
             intent.putExtra("nova_notificacao", novoTexto);
             sendBroadcast(intent);

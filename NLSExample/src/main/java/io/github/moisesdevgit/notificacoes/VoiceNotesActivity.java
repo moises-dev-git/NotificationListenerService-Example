@@ -1,4 +1,4 @@
-package com.kpbird.nlsexample;
+package io.github.moisesdevgit.notificacoes;
 
 import android.content.Intent;
 import android.media.MediaPlayer;

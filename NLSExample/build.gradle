@@ -5,11 +5,11 @@ plugins {
 
 android {
     // CORREÇÃO: Define o namespace exigido pelo AGP 8+
-    namespace "com.kpbird.nlsexample"
+    namespace "io.github.moisesdevgit.notificacoes"
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.kpbird.nlsexample"
+        applicationId "io.github.moisesdevgit.notificacoes"
         minSdk 21
         targetSdk 34
         versionCode 1

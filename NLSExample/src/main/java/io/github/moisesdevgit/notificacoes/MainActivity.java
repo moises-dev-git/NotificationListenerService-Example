@@ -1,4 +1,4 @@
-package com.kpbird.nlsexample;
+package io.github.moisesdevgit.notificacoes;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         nReceiver = new NotificationReceiver();
         IntentFilter filter = new IntentFilter();
-        filter.addAction("com.kpbird.nlsexample.NOTIFICATION_LISTENER_EXAMPLE");
+        filter.addAction("io.github.moisesdevgit.notificacoes.NOTIFICATION_LISTENER_EXAMPLE");
 
         ContextCompat.registerReceiver(
                 this,

@@ -1,4 +1,4 @@
-package com.kpbird.nlsexample;
+package io.github.moisesdevgit.notificacoes;
 
 import android.content.ContentResolver;
 import android.content.Context;

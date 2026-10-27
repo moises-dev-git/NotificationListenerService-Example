@@ -1,4 +1,4 @@
-package com.kpbird.nlsexample;
+package io.github.moisesdevgit.notificacoes;
 
 import android.content.Context;
 import android.text.format.Formatter;
