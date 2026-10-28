@@ -31,6 +31,9 @@ public class NotificationDb extends SQLiteOpenHelper {
     private static final String COL_ID = "_id";
     private static final String COL_RAW = "raw";
 
+    // Quantas notificações recentes são consultadas para evitar mensagens repetidas
+    private static final int JANELA_DUPLICATAS = 2000;
+
     // Armazenamento antigo (usado apenas na migração)
     private static final String OLD_PREFS_NAME = "HistoricoNotificacoes";
     private static final String OLD_KEY_LOG = "log_texto";
@@ -114,6 +117,21 @@ public class NotificationDb extends SQLiteOpenHelper {
         try (Cursor c = getReadableDatabase().query(TABLE, new String[]{COL_RAW},
                 null, null, null, null, COL_ID + " DESC", "1")) {
             return c.moveToFirst() ? c.getString(0) : "";
+        }
+    }
+
+    /**
+     * Indica se este texto já está entre as últimas notificações salvas.
+     * Usado para mensagens de conversas, que o app de origem repete a cada nova notificação.
+     */
+    public boolean existeRecente(String raw) {
+        try (Cursor c = getReadableDatabase().rawQuery(
+                "SELECT 1 FROM " + TABLE
+                        + " WHERE " + COL_ID + " > (SELECT IFNULL(MAX(" + COL_ID + "), 0) - "
+                        + JANELA_DUPLICATAS + " FROM " + TABLE + ")"
+                        + " AND " + COL_RAW + " = ? LIMIT 1",
+                new String[]{raw})) {
+            return c.moveToFirst();
         }
     }
 
